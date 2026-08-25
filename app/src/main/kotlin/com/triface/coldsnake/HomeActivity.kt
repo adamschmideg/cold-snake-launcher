@@ -1,4 +1,4 @@
-package net.schmideg.coldsnake
+package com.triface.coldsnake
 
 import android.content.Intent
 import android.os.Bundle
