@@ -1,4 +1,4 @@
-package com.triface.coldsnake
+package io.triface.coldsnake
 
 import android.content.Intent
 import android.os.Bundle

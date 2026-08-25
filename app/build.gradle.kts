@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.triface.coldsnake"
+    namespace = "io.triface.coldsnake"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.triface.coldsnake"
+        applicationId = "io.triface.coldsnake"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

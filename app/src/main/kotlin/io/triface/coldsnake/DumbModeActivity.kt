@@ -1,4 +1,4 @@
-package com.triface.coldsnake
+package io.triface.coldsnake
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
