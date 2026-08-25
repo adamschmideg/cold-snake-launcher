@@ -11,6 +11,12 @@ Full concept and design notes live outside this repo, in the project's Obsidian 
 Early scaffold — v1 goal is a working default-launcher app with dumb-mode sessions,
 published to the Google Play Store.
 
+## Permissions
+
+| Permission | Why |
+|---|---|
+| `com.android.alarm.permission.SET_ALARM` | Required by some clock apps (e.g. MIUI's) to open the alarms screen from the dumb-mode app grid's Clock tile. |
+
 ## Stack
 
 - Kotlin

@@ -10,6 +10,54 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:columnCount="2"
+        android:rowCount="4">
+
+        <TextView
+            android:id="@+id/appPhone"
+            style="@style/AppTile"
+            android:text="@string/app_phone" />
+
+        <TextView
+            android:id="@+id/appMessages"
+            style="@style/AppTile"
+            android:text="@string/app_messages" />
+
+        <TextView
+            android:id="@+id/appCamera"
+            style="@style/AppTile"
+            android:text="@string/app_camera" />
+
+        <TextView
+            android:id="@+id/appClock"
+            style="@style/AppTile"
+            android:text="@string/app_clock" />
+
+        <TextView
+            android:id="@+id/appCalendar"
+            style="@style/AppTile"
+            android:text="@string/app_calendar" />
+
+        <TextView
+            android:id="@+id/appMaps"
+            style="@style/AppTile"
+            android:text="@string/app_maps" />
+
+        <TextView style="@style/AppTile.Spare" />
+
+        <TextView style="@style/AppTile.Spare" />
+
+    </GridLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
     <TextView
         android:id="@+id/countdownText"
         android:layout_width="match_parent"
