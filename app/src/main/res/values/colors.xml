@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ground">#0B1F1C</color>
+    <color name="phosphor">#39FF88</color>
+    <color name="steel">#B8C4C2</color>
+    <color name="cold_white">#EAF2EF</color>
+    <color name="teal">#1D5A4A</color>
+    <color name="warning_pop">#FF6A3D</color>
+</resources>

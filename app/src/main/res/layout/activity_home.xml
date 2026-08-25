@@ -1,15 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/ground"
+    android:padding="32dp">
+
+    <TextView
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/phosphor"
+        android:textSize="28sp"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.1"
+        android:layout_marginBottom="48dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/app_name"
-        android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:text="@string/session_prompt"
+        android:textColor="@color/steel"
+        android:textSize="14sp"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="16dp" />
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="48dp">
+
+        <Button
+            android:id="@+id/duration1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:minWidth="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="12sp"
+            android:text="@string/duration_1"
+            android:fontFamily="monospace"
+            android:textColor="@color/cold_white"
+            android:backgroundTint="@color/teal" />
+
+        <Button
+            android:id="@+id/duration15"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:minWidth="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="12sp"
+            android:text="@string/duration_15"
+            android:fontFamily="monospace"
+            android:textColor="@color/cold_white"
+            android:backgroundTint="@color/teal" />
+
+        <Button
+            android:id="@+id/duration30"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:minWidth="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="12sp"
+            android:text="@string/duration_30"
+            android:fontFamily="monospace"
+            android:textColor="@color/cold_white"
+            android:backgroundTint="@color/teal" />
+
+        <Button
+            android:id="@+id/duration60"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:minWidth="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textSize="12sp"
+            android:text="@string/duration_60"
+            android:fontFamily="monospace"
+            android:textColor="@color/cold_white"
+            android:backgroundTint="@color/teal" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/startSession"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/start_session"
+        android:fontFamily="monospace"
+        android:textColor="@color/ground"
+        android:backgroundTint="@color/warning_pop"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp" />
+
+</LinearLayout>
