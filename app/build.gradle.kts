@@ -1,23 +1,43 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
 }
 
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+
 android {
     namespace = "io.triface.coldsnake"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "io.triface.coldsnake"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "0.1.0"
+    }
+
+    signingConfigs {
+        create("release") {
+            val keystorePath = localProperties.getProperty("coldsnake.keystore.path")
+            if (keystorePath != null) {
+                storeFile = file(keystorePath)
+                storePassword = localProperties.getProperty("coldsnake.keystore.password")
+                keyAlias = localProperties.getProperty("coldsnake.keystore.alias")
+                keyPassword = localProperties.getProperty("coldsnake.keystore.password")
+            }
+        }
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 
