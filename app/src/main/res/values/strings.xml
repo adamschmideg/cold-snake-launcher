@@ -2,10 +2,9 @@
 <resources>
     <string name="app_name">Cold Snake</string>
     <string name="session_prompt">PICK A SESSION LENGTH</string>
-    <string name="duration_1">1 MIN</string>
-    <string name="duration_15">15 MIN</string>
-    <string name="duration_30">30 MIN</string>
-    <string name="duration_60">1 H</string>
+    <string name="duration_2s">2 SEC</string>
+    <string name="duration_10s">10 SEC</string>
+    <string name="duration_1m">1 MIN</string>
     <string name="start_session">START DUMB MODE</string>
-    <string name="session_started_toast">Dumb mode for %1$d min would start now — coming soon</string>
+    <string name="countdown_format">%1$d</string>
 </resources>

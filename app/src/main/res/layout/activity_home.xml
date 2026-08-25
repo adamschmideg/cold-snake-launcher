@@ -35,7 +35,7 @@
         android:layout_marginBottom="48dp">
 
         <Button
-            android:id="@+id/duration1"
+            android:id="@+id/duration2s"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,13 +46,13 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:textSize="12sp"
-            android:text="@string/duration_1"
+            android:text="@string/duration_2s"
             android:fontFamily="monospace"
             android:textColor="@color/cold_white"
             android:backgroundTint="@color/teal" />
 
         <Button
-            android:id="@+id/duration15"
+            android:id="@+id/duration10s"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,30 +63,13 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:textSize="12sp"
-            android:text="@string/duration_15"
+            android:text="@string/duration_10s"
             android:fontFamily="monospace"
             android:textColor="@color/cold_white"
             android:backgroundTint="@color/teal" />
 
         <Button
-            android:id="@+id/duration30"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="4dp"
-            android:minWidth="0dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:textSize="12sp"
-            android:text="@string/duration_30"
-            android:fontFamily="monospace"
-            android:textColor="@color/cold_white"
-            android:backgroundTint="@color/teal" />
-
-        <Button
-            android:id="@+id/duration60"
+            android:id="@+id/duration1m"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -96,7 +79,7 @@
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
             android:textSize="12sp"
-            android:text="@string/duration_60"
+            android:text="@string/duration_1m"
             android:fontFamily="monospace"
             android:textColor="@color/cold_white"
             android:backgroundTint="@color/teal" />
