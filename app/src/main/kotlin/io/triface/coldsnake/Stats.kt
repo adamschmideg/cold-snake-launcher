@@ -30,7 +30,11 @@ object Stats {
         val givenUpCount = prefs.getInt(KEY_GIVEN_UP_COUNT, 0)
         val iceTimeSeconds = prefs.getLong(KEY_ICE_TIME_SECONDS, 0L)
 
-        val taxedSeconds = max(0, secondsSurvived - SESSION_TAX_SECONDS)
+        val taxedSeconds = if (secondsSurvived <= 0) {
+            0
+        } else {
+            max(1, secondsSurvived - SESSION_TAX_SECONDS)
+        }
 
         prefs.edit()
             .putInt(KEY_COMPLETED_COUNT, if (completed) completedCount + 1 else completedCount)
