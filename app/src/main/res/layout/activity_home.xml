@@ -97,4 +97,15 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp" />
 
+    <TextView
+        android:id="@+id/cooldownText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/steel"
+        android:textSize="12sp"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.05"
+        android:visibility="gone" />
+
 </LinearLayout>
