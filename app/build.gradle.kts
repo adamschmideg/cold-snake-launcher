@@ -12,12 +12,12 @@ val localProperties = Properties().apply {
 
 android {
     namespace = "io.triface.coldsnake"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "io.triface.coldsnake"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 2
         versionName = "0.1.1"
     }
