@@ -23,6 +23,7 @@ const val EXTRA_DURATION_SECONDS = "duration_seconds"
 class DumbModeActivity : AppCompatActivity() {
 
     private var timer: CountDownTimer? = null
+    private var durationSeconds = 0
     private var secondsLeft = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,7 +55,7 @@ class DumbModeActivity : AppCompatActivity() {
             launchOrToast(Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0")))
         }
 
-        val durationSeconds = intent.getIntExtra(EXTRA_DURATION_SECONDS, 60)
+        durationSeconds = intent.getIntExtra(EXTRA_DURATION_SECONDS, 60)
         val countdownText = findViewById<TextView>(R.id.countdownText)
 
         secondsLeft = durationSeconds
@@ -66,6 +67,7 @@ class DumbModeActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 secondsLeft = 0
+                Stats.recordSession(this@DumbModeActivity, durationSeconds, completed = true)
                 finishAffinity()
             }
         }.start()
@@ -76,7 +78,8 @@ class DumbModeActivity : AppCompatActivity() {
             .setTitle(R.string.give_up_title)
             .setMessage(R.string.give_up_message)
             .setPositiveButton(R.string.give_up_confirm) { _, _ ->
-                GiveUpStats.recordGiveUp(this, secondsLeft)
+                val secondsSurvived = durationSeconds - secondsLeft
+                Stats.recordSession(this, secondsSurvived, completed = false)
                 finishAffinity()
             }
             .setNegativeButton(R.string.give_up_cancel, null)

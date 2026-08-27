@@ -3,6 +3,7 @@ package io.triface.coldsnake
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
@@ -43,6 +44,27 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, DumbModeActivity::class.java)
                 .putExtra(EXTRA_DURATION_SECONDS, selectedDurationSeconds)
             startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateStatsUi()
+    }
+
+    private fun updateStatsUi() {
+        val iceTimeSeconds = Stats.iceTimeSeconds(this)
+        findViewById<TextView>(R.id.iceTimeValue).text = getString(
+            R.string.ice_time_format,
+            iceTimeSeconds / 60,
+            iceTimeSeconds % 60,
+        )
+
+        val disciplinePercent = Stats.disciplinePercent(this)
+        findViewById<TextView>(R.id.disciplineValue).text = if (disciplinePercent != null) {
+            getString(R.string.discipline_format, disciplinePercent)
+        } else {
+            getString(R.string.discipline_placeholder)
         }
     }
 
