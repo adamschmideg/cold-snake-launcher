@@ -15,8 +15,7 @@
     <string name="app_maps">MAPS</string>
     <string name="no_app_found">No app found for this</string>
     <string name="give_up_title">Give up?</string>
-    <string name="give_up_message">You\'ll be locked out of starting a new session for %1$d sec.</string>
+    <string name="give_up_message">End this session early?</string>
     <string name="give_up_confirm">Give up</string>
     <string name="give_up_cancel">Keep going</string>
-    <string name="cooldown_format">LOCKED OUT: %1$d SEC</string>
 </resources>

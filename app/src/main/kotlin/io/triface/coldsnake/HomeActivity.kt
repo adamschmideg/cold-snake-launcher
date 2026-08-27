@@ -2,9 +2,7 @@ package io.triface.coldsnake
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.CountDownTimer
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
@@ -17,9 +15,6 @@ class HomeActivity : AppCompatActivity() {
 
     private var selectedDurationSeconds = 10
     private lateinit var durationButtons: Map<Button, Int>
-    private lateinit var startSession: Button
-    private lateinit var cooldownText: TextView
-    private var cooldownTimer: CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,8 +23,7 @@ class HomeActivity : AppCompatActivity() {
         val duration2s = findViewById<Button>(R.id.duration2s)
         val duration10s = findViewById<Button>(R.id.duration10s)
         val duration1m = findViewById<Button>(R.id.duration1m)
-        startSession = findViewById(R.id.startSession)
-        cooldownText = findViewById(R.id.cooldownText)
+        val startSession = findViewById<Button>(R.id.startSession)
 
         durationButtons = mapOf(
             duration2s to 2,
@@ -50,40 +44,6 @@ class HomeActivity : AppCompatActivity() {
                 .putExtra(EXTRA_DURATION_SECONDS, selectedDurationSeconds)
             startActivity(intent)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        updateCooldownUi()
-    }
-
-    override fun onPause() {
-        cooldownTimer?.cancel()
-        super.onPause()
-    }
-
-    private fun updateCooldownUi() {
-        cooldownTimer?.cancel()
-        val remainingSeconds = Cooldown.remainingSeconds(this)
-        if (remainingSeconds <= 0) {
-            startSession.isEnabled = true
-            cooldownText.visibility = android.view.View.GONE
-            return
-        }
-
-        startSession.isEnabled = false
-        cooldownText.visibility = android.view.View.VISIBLE
-        cooldownTimer = object : CountDownTimer(remainingSeconds * 1000L, 1000L) {
-            override fun onTick(millisUntilFinished: Long) {
-                val secondsLeft = (millisUntilFinished / 1000L).toInt() + 1
-                cooldownText.text = getString(R.string.cooldown_format, secondsLeft)
-            }
-
-            override fun onFinish() {
-                startSession.isEnabled = true
-                cooldownText.visibility = android.view.View.GONE
-            }
-        }.start()
     }
 
     private fun updateDurationSelectionUi() {

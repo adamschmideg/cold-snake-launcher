@@ -74,9 +74,9 @@ class DumbModeActivity : AppCompatActivity() {
     private fun confirmGiveUp() {
         AlertDialog.Builder(this)
             .setTitle(R.string.give_up_title)
-            .setMessage(getString(R.string.give_up_message, secondsLeft * 2))
+            .setMessage(R.string.give_up_message)
             .setPositiveButton(R.string.give_up_confirm) { _, _ ->
-                Cooldown.startCooldown(this, secondsLeft)
+                GiveUpStats.recordGiveUp(this, secondsLeft)
                 finishAffinity()
             }
             .setNegativeButton(R.string.give_up_cancel, null)
