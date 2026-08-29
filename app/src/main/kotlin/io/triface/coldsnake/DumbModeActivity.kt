@@ -36,6 +36,12 @@ class DumbModeActivity : AppCompatActivity() {
             }
         })
 
+        try {
+            startLockTask()
+        } catch (e: IllegalArgumentException) {
+            // Screen pinning unavailable on this device/OS version; session continues unpinned.
+        }
+
         findViewById<TextView>(R.id.appPhone).setOnClickListener {
             launchOrToast(Intent(Intent.ACTION_DIAL))
         }
@@ -68,6 +74,7 @@ class DumbModeActivity : AppCompatActivity() {
             override fun onFinish() {
                 secondsLeft = 0
                 Stats.recordSession(this@DumbModeActivity, durationSeconds, completed = true)
+                stopLockTaskSafely()
                 finishAffinity()
             }
         }.start()
@@ -80,10 +87,19 @@ class DumbModeActivity : AppCompatActivity() {
             .setPositiveButton(R.string.give_up_confirm) { _, _ ->
                 val secondsSurvived = durationSeconds - secondsLeft
                 Stats.recordSession(this, secondsSurvived, completed = false)
+                stopLockTaskSafely()
                 finishAffinity()
             }
             .setNegativeButton(R.string.give_up_cancel, null)
             .show()
+    }
+
+    private fun stopLockTaskSafely() {
+        try {
+            stopLockTask()
+        } catch (e: IllegalArgumentException) {
+            // Not in lock task mode (e.g. startLockTask failed earlier); nothing to stop.
+        }
     }
 
     private fun launchOrToast(intent: Intent) {
