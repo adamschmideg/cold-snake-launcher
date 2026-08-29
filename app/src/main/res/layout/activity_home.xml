@@ -157,4 +157,17 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp" />
 
+    <Button
+        android:id="@+id/customizeSlots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/customize_slots_button"
+        android:fontFamily="monospace"
+        android:textSize="12sp"
+        android:textColor="@color/cold_white"
+        android:backgroundTint="@color/teal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
+
 </LinearLayout>

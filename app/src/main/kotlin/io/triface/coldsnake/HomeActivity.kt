@@ -48,6 +48,64 @@ class HomeActivity : AppCompatActivity() {
                 .putExtra(EXTRA_DURATION_SECONDS, selectedDurationSeconds)
             startActivity(intent)
         }
+
+        findViewById<Button>(R.id.customizeSlots).setOnClickListener {
+            showSlotPicker()
+        }
+    }
+
+    private fun showSlotPicker() {
+        val unlockedCount = GridConfig.unlockedSlotCount(this)
+        val labels = (1..GridConfig.SLOT_COUNT).map { slotIndex ->
+            when {
+                slotIndex > unlockedCount -> getString(
+                    R.string.slot_locked_format,
+                    slotIndex,
+                    GridConfig.iceTimeThresholdMinutes(slotIndex),
+                    GridConfig.disciplineThresholdPercent(),
+                )
+                else -> {
+                    val assigned = GridConfig.getSlotPackage(this, slotIndex)
+                    if (assigned == null) {
+                        getString(R.string.slot_unlocked_unset_format, slotIndex)
+                    } else {
+                        val label = runCatching {
+                            packageManager.getApplicationLabel(packageManager.getApplicationInfo(assigned, 0))
+                        }.getOrNull() ?: assigned
+                        getString(R.string.slot_unlocked_set_format, slotIndex, label)
+                    }
+                }
+            }
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.customize_slots_title)
+            .setItems(labels.toTypedArray()) { _, which ->
+                val slotIndex = which + 1
+                if (slotIndex <= unlockedCount) {
+                    showAppPicker(slotIndex)
+                }
+            }
+            .show()
+    }
+
+    private fun showAppPicker(slotIndex: Int) {
+        val candidates = GridConfig.candidatesForSlot(this, slotIndex)
+        if (candidates.isEmpty()) {
+            AlertDialog.Builder(this)
+                .setMessage(R.string.no_eligible_apps)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+            return
+        }
+
+        val labels = candidates.map { packageManager.getApplicationLabel(it).toString() }.toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.customize_slots_title)
+            .setItems(labels) { _, which ->
+                GridConfig.setSlotPackage(this, slotIndex, candidates[which].packageName)
+            }
+            .show()
     }
 
     override fun onResume() {

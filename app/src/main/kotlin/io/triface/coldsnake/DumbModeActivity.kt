@@ -3,7 +3,6 @@ package io.triface.coldsnake
 import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.provider.AlarmClock
@@ -57,9 +56,9 @@ class DumbModeActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.appCalendar).setOnClickListener {
             launchOrToast(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_APP_CALENDAR))
         }
-        findViewById<TextView>(R.id.appMaps).setOnClickListener {
-            launchOrToast(Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0")))
-        }
+        setUpCustomSlotTile(R.id.appCustom1, slotIndex = 1)
+        setUpCustomSlotTile(R.id.appCustom2, slotIndex = 2)
+        setUpCustomSlotTile(R.id.appCustom3, slotIndex = 3)
 
         durationSeconds = intent.getIntExtra(EXTRA_DURATION_SECONDS, 60)
         val countdownText = findViewById<TextView>(R.id.countdownText)
@@ -102,6 +101,30 @@ class DumbModeActivity : AppCompatActivity() {
             stopLockTask()
         } catch (e: IllegalArgumentException) {
             // Not in lock task mode (e.g. startLockTask failed earlier); nothing to stop.
+        }
+    }
+
+    private fun setUpCustomSlotTile(viewId: Int, slotIndex: Int) {
+        val tile = findViewById<TextView>(viewId)
+        val assignedPackage = GridConfig.getSlotPackage(this, slotIndex)
+        if (assignedPackage == null) {
+            tile.text = ""
+            tile.isClickable = false
+            return
+        }
+
+        val label = runCatching {
+            packageManager.getApplicationLabel(packageManager.getApplicationInfo(assignedPackage, 0))
+        }.getOrNull() ?: assignedPackage
+
+        tile.text = label
+        tile.setOnClickListener {
+            val launchIntent = packageManager.getLaunchIntentForPackage(assignedPackage)
+            if (launchIntent != null) {
+                launchOrToast(launchIntent)
+            } else {
+                Toast.makeText(this, R.string.no_app_found, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

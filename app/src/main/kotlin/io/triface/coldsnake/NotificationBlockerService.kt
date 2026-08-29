@@ -5,14 +5,17 @@ import android.service.notification.StatusBarNotification
 
 /**
  * While a dumb-mode session is active, snoozes every incoming notification
- * for the time remaining in the session. Snoozing (not cancelling) means
- * Android re-shows the original notification on its own once the session
- * ends — nothing is lost, just deferred.
+ * for the time remaining in the session — except from apps assigned to a
+ * custom grid slot, since the user deliberately chose those as reachable
+ * during dumb mode. Snoozing (not cancelling) means Android re-shows the
+ * original notification on its own once the session ends — nothing is
+ * lost, just deferred.
  */
 class NotificationBlockerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         val remainingMillis = DumbModeState.remainingMillis() ?: return
+        if (sbn.packageName in GridConfig.assignedPackages(this)) return
         snoozeNotification(sbn.key, remainingMillis)
     }
 }

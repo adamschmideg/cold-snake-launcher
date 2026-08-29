@@ -43,13 +43,16 @@
             android:text="@string/app_calendar" />
 
         <TextView
-            android:id="@+id/appMaps"
-            style="@style/AppTile"
-            android:text="@string/app_maps" />
+            android:id="@+id/appCustom1"
+            style="@style/AppTile" />
 
-        <TextView style="@style/AppTile.Spare" />
+        <TextView
+            android:id="@+id/appCustom2"
+            style="@style/AppTile" />
 
-        <TextView style="@style/AppTile.Spare" />
+        <TextView
+            android:id="@+id/appCustom3"
+            style="@style/AppTile" />
 
     </GridLayout>
 
