@@ -23,4 +23,8 @@
     <string name="ice_time_format">%1$dm %2$02ds</string>
     <string name="discipline_format">%1$d%%</string>
     <string name="discipline_placeholder">—</string>
+    <string name="notification_access_title">Hide notifications during dumb mode?</string>
+    <string name="notification_access_message">Cold Snake can hide incoming notifications while a session is running, then let them through automatically once it ends. This needs notification access, granted once in system settings.</string>
+    <string name="notification_access_open_settings">Open settings</string>
+    <string name="notification_access_skip">Not now</string>
 </resources>

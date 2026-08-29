@@ -65,6 +65,7 @@ class DumbModeActivity : AppCompatActivity() {
         val countdownText = findViewById<TextView>(R.id.countdownText)
 
         secondsLeft = durationSeconds
+        DumbModeState.sessionStarted(durationSeconds)
         timer = object : CountDownTimer(durationSeconds * 1000L, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
                 secondsLeft = (millisUntilFinished / 1000L).toInt() + 1
@@ -74,6 +75,7 @@ class DumbModeActivity : AppCompatActivity() {
             override fun onFinish() {
                 secondsLeft = 0
                 Stats.recordSession(this@DumbModeActivity, durationSeconds, completed = true)
+                DumbModeState.sessionEnded()
                 stopLockTaskSafely()
                 finishAffinity()
             }
@@ -87,6 +89,7 @@ class DumbModeActivity : AppCompatActivity() {
             .setPositiveButton(R.string.give_up_confirm) { _, _ ->
                 val secondsSurvived = durationSeconds - secondsLeft
                 Stats.recordSession(this, secondsSurvived, completed = false)
+                DumbModeState.sessionEnded()
                 stopLockTaskSafely()
                 finishAffinity()
             }
