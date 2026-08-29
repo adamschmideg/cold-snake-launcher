@@ -8,9 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
 /**
- * The launcher's HOME screen. Registering this Activity with an ACTION_MAIN /
- * CATEGORY_HOME intent-filter is what lets the user set Cold Snake as their
- * default launcher.
+ * The app's main screen: pick a duration and start a dumb-mode session.
+ * A normal launcher-icon app, not the system HOME app — DumbModeActivity's
+ * screen pinning handles blocking, not default-launcher registration.
  */
 class HomeActivity : AppCompatActivity() {
 
