@@ -35,12 +35,6 @@ class DumbModeActivity : AppCompatActivity() {
             }
         })
 
-        try {
-            startLockTask()
-        } catch (e: IllegalArgumentException) {
-            // Screen pinning unavailable on this device/OS version; session continues unpinned.
-        }
-
         findViewById<TextView>(R.id.appPhone).setOnClickListener {
             launchOrToast(Intent(Intent.ACTION_DIAL))
         }
@@ -129,12 +123,27 @@ class DumbModeActivity : AppCompatActivity() {
     }
 
     private fun launchOrToast(intent: Intent) {
+        // Screen pinning blocks launching any other app's activity, same as
+        // it blocks Home/Recents — so unpin for this deliberate, in-grid
+        // launch. onResume re-pins once we're back from it.
+        stopLockTaskSafely()
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, R.string.no_app_found, Toast.LENGTH_SHORT).show()
         } catch (e: SecurityException) {
             Toast.makeText(this, R.string.no_app_found, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (DumbModeState.remainingMillis() != null) {
+            try {
+                startLockTask()
+            } catch (e: IllegalArgumentException) {
+                // Screen pinning unavailable on this device/OS version.
+            }
         }
     }
 
