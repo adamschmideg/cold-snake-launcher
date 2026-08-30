@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -111,6 +112,15 @@ class HomeActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateStatsUi()
+        DumbModeState.consumeInterruption()?.let { remainingMillis ->
+            val minutes = (remainingMillis / 1000 / 60).toInt()
+            val seconds = (remainingMillis / 1000 % 60).toInt()
+            Toast.makeText(
+                this,
+                getString(R.string.session_interrupted_format, minutes, seconds),
+                Toast.LENGTH_LONG,
+            ).show()
+        }
         if (!isNotificationAccessGranted()) {
             promptForNotificationAccess()
         }

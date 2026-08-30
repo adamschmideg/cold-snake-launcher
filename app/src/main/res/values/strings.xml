@@ -32,4 +32,6 @@
     <string name="slot_unlocked_unset_format">Slot %1$d: tap to choose an app</string>
     <string name="slot_unlocked_set_format">Slot %1$d: %2$s (tap to change)</string>
     <string name="no_eligible_apps">No eligible apps found for this slot</string>
+    <string name="session_interrupted_banner">Welcome back — %1$dm %2$02ds left</string>
+    <string name="session_interrupted_format">Last session was interrupted with %1$dm %2$02ds left</string>
 </resources>

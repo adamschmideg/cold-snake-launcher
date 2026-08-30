@@ -16,14 +16,20 @@ const val EXTRA_DURATION_SECONDS = "duration_seconds"
 
 /**
  * The restricted "dumb mode" screen: a fixed grid of essential apps plus
- * a countdown. The actual grayscale/notification restrictions from
- * Notes.md aren't built yet — this is just the app grid and the timer.
+ * a countdown. Doesn't try to block escape (Home/Recents/back) — instead
+ * notices when it happens via onPause/onResume and reports it, either as
+ * soon as the user comes back to this same screen, or via HomeActivity's
+ * next launch if this task got killed in the meantime.
  */
 class DumbModeActivity : AppCompatActivity() {
 
     private var timer: CountDownTimer? = null
     private var durationSeconds = 0
     private var secondsLeft = 0
+
+    // True right before we start an in-grid app launch, so onPause() doesn't
+    // mistake that deliberate leave for an escape.
+    private var expectingReturn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +75,6 @@ class DumbModeActivity : AppCompatActivity() {
                 secondsLeft = 0
                 Stats.recordSession(this@DumbModeActivity, durationSeconds, completed = true)
                 DumbModeState.sessionEnded()
-                stopLockTaskSafely()
                 finishAffinity()
             }
         }.start()
@@ -83,19 +88,10 @@ class DumbModeActivity : AppCompatActivity() {
                 val secondsSurvived = durationSeconds - secondsLeft
                 Stats.recordSession(this, secondsSurvived, completed = false)
                 DumbModeState.sessionEnded()
-                stopLockTaskSafely()
                 finishAffinity()
             }
             .setNegativeButton(R.string.give_up_cancel, null)
             .show()
-    }
-
-    private fun stopLockTaskSafely() {
-        try {
-            stopLockTask()
-        } catch (e: IllegalArgumentException) {
-            // Not in lock task mode (e.g. startLockTask failed earlier); nothing to stop.
-        }
     }
 
     private fun setUpCustomSlotTile(viewId: Int, slotIndex: Int) {
@@ -123,10 +119,7 @@ class DumbModeActivity : AppCompatActivity() {
     }
 
     private fun launchOrToast(intent: Intent) {
-        // Screen pinning blocks launching any other app's activity, same as
-        // it blocks Home/Recents — so unpin for this deliberate, in-grid
-        // launch. onResume re-pins once we're back from it.
-        stopLockTaskSafely()
+        expectingReturn = true
         try {
             startActivity(intent)
         } catch (e: ActivityNotFoundException) {
@@ -136,14 +129,27 @@ class DumbModeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (!expectingReturn && DumbModeState.remainingMillis() != null) {
+            DumbModeState.markInterrupted()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        if (DumbModeState.remainingMillis() != null) {
-            try {
-                startLockTask()
-            } catch (e: IllegalArgumentException) {
-                // Screen pinning unavailable on this device/OS version.
-            }
+        if (expectingReturn) {
+            expectingReturn = false
+            return
+        }
+        DumbModeState.consumeInterruption()?.let { remainingMillis ->
+            val minutes = (remainingMillis / 1000 / 60).toInt()
+            val seconds = (remainingMillis / 1000 % 60).toInt()
+            Toast.makeText(
+                this,
+                getString(R.string.session_interrupted_banner, minutes, seconds),
+                Toast.LENGTH_LONG,
+            ).show()
         }
     }
 
