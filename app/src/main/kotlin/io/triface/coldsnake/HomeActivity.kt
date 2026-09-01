@@ -56,6 +56,38 @@ class HomeActivity : AppCompatActivity() {
         findViewById<Button>(R.id.messageRhythm).setOnClickListener {
             showMessageAppsPicker()
         }
+
+        findViewById<Button>(R.id.pendingMessages).setOnClickListener {
+            showPendingMessages()
+        }
+    }
+
+    private fun updatePendingMessagesUi() {
+        val button = findViewById<Button>(R.id.pendingMessages)
+        val count = PendingMessages.all().size
+        if (count == 0) {
+            button.visibility = android.view.View.GONE
+            return
+        }
+        button.visibility = android.view.View.VISIBLE
+        button.text = getString(R.string.pending_messages_button, count)
+    }
+
+    private fun showPendingMessages() {
+        val pending = PendingMessages.all()
+        if (pending.isEmpty()) return
+
+        val labels = pending.map { "${it.appLabel} — ${it.title}: ${it.text}" }.toTypedArray()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.pending_messages_title)
+            .setItems(labels) { _, which ->
+                val item = pending[which]
+                runCatching { item.contentIntent?.send() }
+                PendingMessages.remove(item.key)
+                updatePendingMessagesUi()
+            }
+            .setOnDismissListener { updatePendingMessagesUi() }
+            .show()
     }
 
     private fun showMessageAppsPicker() {
@@ -139,6 +171,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        updatePendingMessagesUi()
         DumbModeState.consumeInterruption()?.let { remainingMillis ->
             val minutes = (remainingMillis / 1000 / 60).toInt()
             val seconds = (remainingMillis / 1000 % 60).toInt()

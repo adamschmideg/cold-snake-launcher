@@ -31,4 +31,6 @@
     <string name="session_interrupted_format">Last session was interrupted with %1$dm %2$02ds left</string>
     <string name="message_rhythm_button">MESSAGE RHYTHM</string>
     <string name="message_rhythm_title">Which apps are \"messages\"?</string>
+    <string name="pending_messages_button">%1$d WAITING</string>
+    <string name="pending_messages_title">Waiting for you</string>
 </resources>
