@@ -110,4 +110,17 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp" />
 
+    <Button
+        android:id="@+id/messageRhythm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/message_rhythm_button"
+        android:fontFamily="monospace"
+        android:textSize="12sp"
+        android:textColor="@color/cold_white"
+        android:backgroundTint="@color/teal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" />
+
 </LinearLayout>

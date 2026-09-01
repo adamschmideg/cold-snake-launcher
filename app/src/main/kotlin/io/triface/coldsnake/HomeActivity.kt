@@ -52,6 +52,35 @@ class HomeActivity : AppCompatActivity() {
         findViewById<Button>(R.id.customizeSlots).setOnClickListener {
             showSlotPicker()
         }
+
+        findViewById<Button>(R.id.messageRhythm).setOnClickListener {
+            showMessageAppsPicker()
+        }
+    }
+
+    private fun showMessageAppsPicker() {
+        val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        val apps = packageManager.queryIntentActivities(intent, 0)
+            .map { it.activityInfo.applicationInfo }
+            .distinctBy { it.packageName }
+            .filter { it.packageName != packageName }
+            .sortedBy { packageManager.getApplicationLabel(it).toString() }
+
+        val labels = apps.map { packageManager.getApplicationLabel(it).toString() }.toTypedArray()
+        val selected = MessageBatchConfig.messagePackages(this)
+        val checked = apps.map { it.packageName in selected }.toBooleanArray()
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.message_rhythm_title)
+            .setMultiChoiceItems(labels, checked) { _, which, isChecked -> checked[which] = isChecked }
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                val newSelection = apps.filterIndexed { index, _ -> checked[index] }
+                    .map { it.packageName }
+                    .toSet()
+                MessageBatchConfig.setMessagePackages(this, newSelection)
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
     }
 
     private fun showSlotPicker() {
