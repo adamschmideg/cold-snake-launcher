@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
@@ -111,7 +110,6 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateStatsUi()
         DumbModeState.consumeInterruption()?.let { remainingMillis ->
             val minutes = (remainingMillis / 1000 / 60).toInt()
             val seconds = (remainingMillis / 1000 % 60).toInt()
@@ -139,22 +137,6 @@ class HomeActivity : AppCompatActivity() {
             }
             .setNegativeButton(R.string.notification_access_skip, null)
             .show()
-    }
-
-    private fun updateStatsUi() {
-        val iceTimeSeconds = Stats.iceTimeSeconds(this)
-        findViewById<TextView>(R.id.iceTimeValue).text = getString(
-            R.string.ice_time_format,
-            iceTimeSeconds / 60,
-            iceTimeSeconds % 60,
-        )
-
-        val disciplinePercent = Stats.disciplinePercent(this)
-        findViewById<TextView>(R.id.disciplineValue).text = if (disciplinePercent != null) {
-            getString(R.string.discipline_format, disciplinePercent)
-        } else {
-            getString(R.string.discipline_placeholder)
-        }
     }
 
     private fun updateDurationSelectionUi() {

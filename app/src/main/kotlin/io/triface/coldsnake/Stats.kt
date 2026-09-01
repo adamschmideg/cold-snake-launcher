@@ -7,10 +7,9 @@ import kotlin.math.max
  * Tracks every dumb-mode session (completed or given up early) and derives
  * the two headline scores:
  *
- * - Ice Time: cumulative seconds survived, minus a flat per-session tax.
- *   The tax means many short sessions earn far less than one long session
- *   covering the same total time — rewarding length over frequency,
- *   without needing a superlinear/exponent formula.
+ * - Ice Time: cumulative seconds from *completed* sessions only, minus a
+ *   flat per-session tax. Giving up voids the session entirely — no partial
+ *   credit — so Ice Time only grows from sessions actually seen through.
  * - Discipline: percentage of sessions finished without giving up.
  */
 object Stats {
@@ -30,7 +29,10 @@ object Stats {
         val givenUpCount = prefs.getInt(KEY_GIVEN_UP_COUNT, 0)
         val iceTimeSeconds = prefs.getLong(KEY_ICE_TIME_SECONDS, 0L)
 
-        val taxedSeconds = if (secondsSurvived <= 0) {
+        // Giving up voids the session — it counts against Discipline% but
+        // contributes nothing to Ice Time, matching "leave early and it's
+        // like the session never happened" rather than partial credit.
+        val taxedSeconds = if (!completed || secondsSurvived <= 0) {
             0
         } else {
             max(1, secondsSurvived - SESSION_TAX_SECONDS)
