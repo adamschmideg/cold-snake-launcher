@@ -5,15 +5,17 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 
 /**
- * Two independent reasons to hold a notification back, checked in order:
+ * Nothing here fires unless a dumb-mode session is active — Cold Snake must
+ * not change phone behavior while it isn't running. Two reasons to hold a
+ * notification back during a session, checked in order:
  *
- * 1. During a dumb-mode session: snooze everything until the session ends,
- *    except apps assigned to a custom grid slot (deliberately reachable).
- * 2. All the time, for apps the user has marked as "messages": snooze to
- *    the next fixed 10-minute boundary, and record it in PendingMessages
- *    so the batch can be read as a plain sender+snippet list — checking
- *    in doesn't mean opening the real app and getting pulled into
- *    everything else in it. See MessageBatchConfig.
+ * 1. Apps not assigned to a custom grid slot: snooze until the session ends.
+ * 2. Apps assigned to a slot AND marked as "messages": instead of letting
+ *    every notification through immediately, snooze to the next fixed
+ *    10-minute boundary and record it in PendingMessages, so the batch can
+ *    be read as a plain sender+snippet list — checking in doesn't mean
+ *    opening the real app and getting pulled into everything else in it.
+ *    See MessageBatchConfig.
  *
  * Snoozing (not cancelling) means Android re-shows the original
  * notification on its own once the hold is over — nothing is lost, just
@@ -22,15 +24,16 @@ import android.service.notification.StatusBarNotification
 class NotificationBlockerService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        val remainingMillis = DumbModeState.remainingMillis()
-        if (remainingMillis != null && sbn.packageName !in GridConfig.assignedPackages(this)) {
+        val remainingMillis = DumbModeState.remainingMillis() ?: return
+
+        if (sbn.packageName !in GridConfig.assignedPackages(this)) {
             snoozeNotification(sbn.key, remainingMillis)
             return
         }
 
         if (sbn.packageName in MessageBatchConfig.messagePackages(this)) {
             recordPending(sbn)
-            snoozeNotification(sbn.key, MessageBatchConfig.millisUntilNextBoundary())
+            snoozeNotification(sbn.key, minOf(MessageBatchConfig.millisUntilNextBoundary(), remainingMillis))
         }
     }
 
