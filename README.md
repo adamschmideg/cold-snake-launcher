@@ -22,6 +22,9 @@ Early preview. Pick a session length (2 sec / 10 sec / 1 min — short durations
 | Permission | Why |
 |---|---|
 | `com.android.alarm.permission.SET_ALARM` | Required by some clock apps (e.g. MIUI's) to open the alarms screen from the dumb-mode app grid's Clock tile. |
+| `io.triface.coldsnake.permission.SESSION_EVENTS` | Signature-level, granted silently. Lets the optional notifications companion app learn when a session starts and ends; no other app can listen in. |
+
+Nothing needs to be granted in system settings. Holding notifications back during a session is the job of a separate companion app, so Cold Snake itself never asks for notification access.
 
 ## Stack
 

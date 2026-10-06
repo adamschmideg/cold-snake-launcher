@@ -65,6 +65,7 @@ class DumbModeActivity : AppCompatActivity() {
 
         secondsLeft = durationSeconds
         DumbModeState.sessionStarted(durationSeconds)
+        DumbModeState.sessionEndAtMillis?.let { SessionEvents.sessionStarted(this, it) }
         timer = object : CountDownTimer(durationSeconds * 1000L, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
                 secondsLeft = (millisUntilFinished / 1000L).toInt() + 1
@@ -75,6 +76,7 @@ class DumbModeActivity : AppCompatActivity() {
                 secondsLeft = 0
                 Stats.recordSession(this@DumbModeActivity, durationSeconds, completed = true)
                 DumbModeState.sessionEnded()
+                SessionEvents.sessionEnded(this@DumbModeActivity)
                 finishAffinity()
             }
         }.start()
@@ -88,6 +90,7 @@ class DumbModeActivity : AppCompatActivity() {
                 val secondsSurvived = durationSeconds - secondsLeft
                 Stats.recordSession(this, secondsSurvived, completed = false)
                 DumbModeState.sessionEnded()
+                SessionEvents.sessionEnded(this)
                 finishAffinity()
             }
             .setNegativeButton(R.string.give_up_cancel, null)

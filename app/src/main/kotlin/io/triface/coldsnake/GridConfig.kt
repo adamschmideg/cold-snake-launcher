@@ -64,7 +64,7 @@ object GridConfig {
         prefs(context).edit().putString(KEY_SLOT_PREFIX + slotIndex, packageName).apply()
     }
 
-    /** All package names currently assigned to a custom slot, for the notification allowlist. */
+    /** All package names currently assigned to a custom slot, passed to the notifications companion as its allowlist. */
     fun assignedPackages(context: Context): Set<String> =
         (1..SLOT_COUNT).mapNotNull { getSlotPackage(context, it) }.toSet()
 
