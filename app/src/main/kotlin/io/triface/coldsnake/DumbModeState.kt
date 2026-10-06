@@ -1,8 +1,8 @@
 package io.triface.coldsnake
 
 /**
- * Shared session state that NotificationBlockerService reads to decide
- * whether to snooze incoming notifications, and for how long.
+ * Session state shared between DumbModeActivity and HomeActivity: when the
+ * current session ends, and whether the last one was interrupted.
  */
 object DumbModeState {
     @Volatile

@@ -3,11 +3,9 @@ package io.triface.coldsnake
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 /**
@@ -119,24 +117,6 @@ class HomeActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG,
             ).show()
         }
-        if (!isNotificationAccessGranted()) {
-            promptForNotificationAccess()
-        }
-    }
-
-    private fun isNotificationAccessGranted(): Boolean {
-        return NotificationManagerCompat.getEnabledListenerPackages(this).contains(packageName)
-    }
-
-    private fun promptForNotificationAccess() {
-        AlertDialog.Builder(this)
-            .setTitle(R.string.notification_access_title)
-            .setMessage(R.string.notification_access_message)
-            .setPositiveButton(R.string.notification_access_open_settings) { _, _ ->
-                startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
-            }
-            .setNegativeButton(R.string.notification_access_skip, null)
-            .show()
     }
 
     private fun updateDurationSelectionUi() {

@@ -17,10 +17,6 @@
     <string name="give_up_message">End this session early?</string>
     <string name="give_up_confirm">Give up</string>
     <string name="give_up_cancel">Keep going</string>
-    <string name="notification_access_title">Hide notifications during dumb mode?</string>
-    <string name="notification_access_message">Cold Snake can hide incoming notifications while a session is running, then let them through automatically once it ends. This needs notification access, granted once in system settings.</string>
-    <string name="notification_access_open_settings">Open settings</string>
-    <string name="notification_access_skip">Not now</string>
     <string name="customize_slots_button">CUSTOM SLOTS</string>
     <string name="customize_slots_title">Custom slots</string>
     <string name="slot_locked_format">Slot %1$d: locked — reach %2$d min Ice Time and %3$d%% Discipline</string>
