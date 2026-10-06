@@ -5,9 +5,9 @@ import android.content.Context
 /**
  * Apps the user has marked as "messages" — SMS, WhatsApp, Messenger, whatever
  * they use. Notifications from these apps are batched to a fixed rhythm
- * (see NotificationBlockerService) instead of arriving one at a time, the
- * rest of the day, not just during dumb-mode sessions. No interval setting
- * on purpose: one less thing to fiddle with.
+ * (see NotificationBlockerService) instead of arriving one at a time —
+ * only while a dumb-mode session is active. No interval setting on
+ * purpose: one less thing to fiddle with.
  */
 object MessageBatchConfig {
     private const val PREFS_NAME = "cold_snake_message_batch"
